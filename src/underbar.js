@@ -56,20 +56,47 @@ var _ = { };
     // TIP: Here's an example of a function that needs to iterate, which we've
     // implemented for you. Instead of using a standard `for` loop, though,
     // it uses the iteration helper `each`, which you will need to write.
+    
+    //var ans = _.each(array,function(target){
+    //  if()
+    //});
   };
 
   // Return all elements of an array that pass a truth test.
   _.filter = function(collection, iterator) {
+    var ans = [];
+    for(var n in collection){
+      if(iterator(collection[n])){
+        ans.push(collection[n]);
+      }
+    }
+    return ans;
   };
+
+  // ** see if you can determine how to do the TIP
 
   // Return all elements of an array that don't pass a truth test.
   _.reject = function(collection, iterator) {
     // TIP: see if you can re-use _.select() here, without simply
     // copying code in and modifying it
+    var ans = [];
+    for(var n in collection){
+      if(!iterator(collection[n])){
+        ans.push(collection[n]);
+      }
+    }
+    return ans;    
   };
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array) {
+    var newArr = [];  
+    for (var n in array){
+        if(newArr.indexOf(array[n]) === -1){
+          newArr.push(array[n]);
+        }
+    }
+    return newArr;
   };
 
 
@@ -78,6 +105,11 @@ var _ = { };
     // map() is a useful primitive iteration function that works a lot
     // like each(), but in addition to running the operation on all
     // the members, it also maintains an array of results.
+    var newArr = [];
+    for(var i in array){
+      newArr.push(iterator(array[i]))
+    }
+    return newArr;
   };
 
   /*
@@ -100,7 +132,10 @@ var _ = { };
 
   // Calls the method named by methodName on each value in the list.
   _.invoke = function(list, methodName, args) {
+    return _.map(list,methodName);
   };
+
+  // stop here
 
   // Reduces an array or object to a single value by repetitively calling
   // iterator(previousValue, item) for each item. previousValue should be
