@@ -84,7 +84,6 @@ var _ = { };
     return ans;
   };
 
-  // ** see if you can determine how to do the TIP
 
   // Return all elements of an array that don't pass a truth test.
   _.reject = function(collection, iterator) {
@@ -142,11 +141,13 @@ var _ = { };
   };
 
   // Calls the method named by methodName on each value in the list.
+  // ** Understand this further
   _.invoke = function(list, methodName, args) {
-    return _.map(list,methodName);
+      return _.map(list,function(value){
+        return value[methodName].apply(value,args)
+      });
   };
 
-  // stop here
 
   // Reduces an array or object to a single value by repetitively calling
   // iterator(previousValue, item) for each item. previousValue should be
@@ -162,6 +163,13 @@ var _ = { };
   //   }, 0); // should be 6
   //
   _.reduce = function(collection, iterator, initialValue) {
+    var ret = initialValue || 0;
+    for (var i in collection){
+      ret = iterator(ret,collection[i]);
+      console.log('ret: '+ret+' arrItem: '+collection[i])
+    }
+    return ret;
+
   };
 
   // Determine if the array or object contains a given value (using `===`).
@@ -180,6 +188,27 @@ var _ = { };
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
+    if(collection[0] !== undefined && iterator){
+      return _.reduce(collection,function(matchItem,arrItem){
+        return iterator(matchItem) === iterator(arrItem);
+      },collection[0]);
+    }
+    else{
+      return true;
+    }
+
+
+    // covers false
+    /* 
+    return _.reduce(collection, function(flag, item) {
+      if (!iterator(item)){
+        return false;
+      }
+      else if (iterator(item){
+        return true;
+      }
+    }, iterator(collection[0])); 
+    */
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
@@ -274,6 +303,8 @@ var _ = { };
   _.shuffle = function(array) {
   };
 
+
+// stop here
 
   /**
    * Note: This is the end of the pre-course curriculum. Feel free to continue,
