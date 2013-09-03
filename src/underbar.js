@@ -166,7 +166,6 @@ var _ = { };
     var ret = initialValue || 0;
     for (var i in collection){
       ret = iterator(ret,collection[i]);
-      console.log('ret: '+ret+' arrItem: '+collection[i])
     }
     return ret;
 
@@ -180,7 +179,7 @@ var _ = { };
       if(wasFound) {
         return true;
       }
-      return item === target;
+      return item == target;
     }, false);
   };
 
@@ -188,34 +187,28 @@ var _ = { };
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
-    if(collection[0] !== undefined && iterator){
+    if(collection[0] != undefined && iterator){
       return _.reduce(collection,function(matchItem,arrItem){
-        return iterator(matchItem) === iterator(arrItem);
+        return iterator(matchItem) == iterator(arrItem);
       },collection[0]);
     }
     else{
       return true;
     }
-
-
-    // covers false
-    /* 
-    return _.reduce(collection, function(flag, item) {
-      if (!iterator(item)){
-        return false;
-      }
-      else if (iterator(item){
-        return true;
-      }
-    }, iterator(collection[0])); 
-    */
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
-  };
+    if(iterator && collection.length>1){
+      return _.contains(_.map(collection,iterator),true);
+    }
+    else{
+      return _.contains(_.map(collection,function(){return _.contains(collection,true);}),true);
+    }
+  }
+  
 
 
   /**
@@ -301,6 +294,13 @@ var _ = { };
 
   // Shuffle an array.
   _.shuffle = function(array) {
+    var newArr = [];
+    var i = array.length-1;
+    while(i>=0){
+      newArr.push(array.splice(Math.round(i*Math.random),1));
+      i--;
+    }
+    return newArr;
   };
 
 
