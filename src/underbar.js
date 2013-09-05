@@ -204,7 +204,10 @@ var _ = { };
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
-    if(iterator && collection.length>1){
+    if (collection.length < 1){
+      return false;
+    }
+    else if(iterator && collection.length>1){
       return _.contains(_.map(collection,iterator),true);
     }
     else{
@@ -268,24 +271,18 @@ var _ = { };
   }*/
 
   _.defaults = function(obj) {
-
-    for(var m in arguments )
     var args = Array.prototype.slice.call(arguments, 1);
-    var keys = Object.keys(args);
-    for(var i in keys){
-      if(obj[i]){
-        args[i].splice(i,1);
-      }
-    }
-    for(var n = 0;n<args.length;n++){
-      for(var j in args[i]){
-        if(!obj[j]){
-          obj[j] = args[n][j];  
+    for (var x in args){
+      var keys = Object.keys(args[x]);
+      for(var i in keys){
+        if(obj[keys[i]] === undefined){
+          obj[keys[i]] = args[x][keys[i]];
         }
       }
-      
+
     }
-    return obj;
+
+    return obj;      
   }
 
 
