@@ -326,7 +326,6 @@ var _ = { };
   _.memoize = function(func) {
     return function(args){
       var myObj = {};
-      console.log('m'+args);
       if(myObj[args] === undefined){
         myObj[args] = func(args);
       }
@@ -343,7 +342,12 @@ var _ = { };
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
-    var n = setTimeout(function(args){return func(args)},wait);
+    if(arguments.length<=2){
+      return setTimeout(func,wait);
+    }
+    var m = Array.prototype.slice.call(arguments, 2);
+    
+    return setTimeout(func(m),wait);
   };
 
 
