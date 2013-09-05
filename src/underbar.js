@@ -144,7 +144,10 @@ var _ = { };
   // ** Understand this further
   _.invoke = function(list, methodName, args) {
       return _.map(list,function(value){
-        return value[methodName].apply(value,args)
+        if(typeof methodName === 'string'){
+          return value[methodName].apply(value,args);
+        }
+        return methodName.apply(value,args);
       });
   };
 
@@ -179,7 +182,7 @@ var _ = { };
       if(wasFound) {
         return true;
       }
-      return item == target;
+      return item === target;
     }, false);
   };
 
@@ -346,7 +349,7 @@ var _ = { };
       return setTimeout(func,wait);
     }
     var m = Array.prototype.slice.call(arguments, 2);
-    
+
     return setTimeout(func(m),wait);
   };
 
