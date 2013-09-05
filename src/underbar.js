@@ -229,13 +229,31 @@ var _ = { };
   //   }, {
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
+  
+  // should rewrite to make more readable
   _.extend = function(obj) {
-  };
+    var args = Array.prototype.slice.call(arguments, 1);
+
+    for(var i = 0;i<args.length;i++){
+      for(var j in args[i]){
+        obj[j] = args[i][j];
+      }
+      
+    }
+    return obj;
+
+  };  
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
+    var newObj = {};
+    for (var i in obj){
+      newObj[i] = obj[i];
+    }
+    return newObj;
   };
+
 
 
   /**
@@ -275,6 +293,11 @@ var _ = { };
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    var myObj = {};
+    if(myObj[args] === 'undefined'){
+      myObj[args] = func(args);
+    }
+    return myObj[args];
   };
 
   // Delays a function for the given number of milliseconds, and then calls
@@ -284,6 +307,7 @@ var _ = { };
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+    var n = setTimeout(function(args){return func(args)},wait);
   };
 
 
@@ -302,9 +326,6 @@ var _ = { };
     }
     return newArr;
   };
-
-
-// stop here
 
   /**
    * Note: This is the end of the pre-course curriculum. Feel free to continue,
