@@ -246,13 +246,44 @@ var _ = { };
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
+  /*
   _.defaults = function(obj) {
-    var newObj = {};
-    for (var i in obj){
-      newObj[i] = obj[i];
+    var objArr = [];
+    var keys;
+    for (var i = 1;i<arguments.length;i++){
+      objArr.push[arguments[i]];
     }
-    return newObj;
-  };
+    for (var j = 0;j<objArr.length;j++){
+      keys = Object.keys(objArr[j]);
+      for(var k in keys){
+        if(!obj[keys[k]]){
+          obj[keys[k]] = objArr[j][keys[k]]; 
+        }
+      }
+    }
+    return obj;
+  }*/
+
+  _.defaults = function(obj) {
+
+    for(var m in arguments )
+    var args = Array.prototype.slice.call(arguments, 1);
+    var keys = Object.keys(args);
+    for(var i in keys){
+      if(obj[i]){
+        args[i].splice(i,1);
+      }
+    }
+    for(var n = 0;n<args.length;n++){
+      for(var j in args[i]){
+        if(!obj[j]){
+          obj[j] = args[n][j];  
+        }
+      }
+      
+    }
+    return obj;
+  }
 
 
 
@@ -293,12 +324,17 @@ var _ = { };
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
-    var myObj = {};
-    if(myObj[args] === 'undefined'){
-      myObj[args] = func(args);
+    return function(args){
+      var myObj = {};
+      console.log('m'+args);
+      if(myObj[args] === undefined){
+        myObj[args] = func(args);
+      }
+      return myObj[args];
     }
-    return myObj[args];
   };
+
+
 
   // Delays a function for the given number of milliseconds, and then calls
   // it with the arguments supplied.
